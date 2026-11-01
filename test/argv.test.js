@@ -48,8 +48,19 @@ test('resume --wake asks the handler to wake the new session', () => {
   assert.equal(parsed.wake, true)
 })
 
+test('resume carries a base64url supplement verbatim', () => {
+  const supplement = '补充要求：\n先改设置页，不要动图标。'
+  const encoded = Buffer.from(supplement, 'utf8').toString('base64url')
+  const parsed = parseInput(` resume --latest --wake --supplement=${encoded}`)
+  assert.equal(parsed.subcommand, 'resume')
+  assert.equal(parsed.latest, true)
+  assert.equal(parsed.wake, true)
+  assert.equal(parsed.supplement, supplement)
+})
+
 test('the one-click client half asks for the latest task, not an ambiguous resume', async () => {
   const source = await readFile(new URL('../lib/client.js', import.meta.url), 'utf8')
   assert.match(source, /\/handoff resume --latest --wake/, 'the client must resolve the task and wake the model')
   assert.doesNotMatch(source, /\/handoff resume'/, 'a bare resume fails once an older pending task exists')
+  assert.match(source, /\/handoff ask-supplement/, 'the one-click flow must use the normal question card')
 })

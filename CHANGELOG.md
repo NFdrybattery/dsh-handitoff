@@ -4,6 +4,57 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.10.0] - 2026-11-01
+
+### Changed
+
+- Rename the plugin/package id from `dsh-handoff` to `dsh-handitoff` across the
+  manifest, bundle patch, Host plugin name, client module id, source kinds,
+  settings/slot ids, profile link, and documentation. The `/handoff` command and
+  the `.dsh/dsh-handoff` storage directory are unchanged.
+- New task folders use `dsh-handoff-YYYYMMDD-HHmm`.
+- The supplement question is single-select; typing a custom answer switches off
+  the option selection.
+
+## [0.9.2] - 2026-11-01
+
+### Changed
+
+- New task folders use `dsh-handoff-YYYYMMDD-HHmm`.
+- The supplement question is back to single-select; typing into its custom input
+  clears the option selection, as the standard question card does.
+
+## [0.9.1] - 2026-11-01
+
+### Changed
+
+- The old model now writes sections 0–11 only. After its turn finishes, the
+  plugin's `/handoff append-recent` command reads the Session log and appends
+  section 12 directly, so the agent no longer copies or verifies the transcript.
+- The one-click flow appends section 12 before showing the supplement question.
+- The supplement question keeps the first option selected as a recommended
+  multi-select option, so typing a custom answer and pressing Enter submits
+  instead of failing validation.
+
+## [0.9.0] - 2026-11-01
+
+### Added
+
+- After the one-click handoff document is written, the old Session shows a
+  question card before the new Session opens. Its default option is "No, start
+  handoff" and its optional input accepts a supplement.
+- On "Next", an empty supplement opens the new Session directly; non-empty text
+  is inserted verbatim into the resume injection under the heading
+  "User supplement before takeover" (交接前用户补充要求).
+- A cancel action aborts the handoff without opening a new Session.
+- The question is the normal Host `ask_user_question` card, not a plugin-drawn
+  modal, so the custom answer field appears under the first option.
+
+### Fixed
+
+- New task folders always use the `dsh-handoff` stem, so a Session title such as
+  `dsh-handover` can no longer produce a `...-dsh-handover` folder.
+
 ## [0.8.3] - 2026-10-31
 
 ### Changed

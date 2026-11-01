@@ -22,6 +22,18 @@ test('resolveHandoffDir stays inside the workspace', async () => {
   }
 })
 
+test('allocateTaskId always uses the dsh-handoff folder stem', async () => {
+  const root = await workspace()
+  try {
+    const store = new HandoffStore({ cwd: root })
+    await store.init()
+    const id = await store.allocateTaskId('创建 dsh-handover 插件', new Date(2026, 9, 31, 19, 43))
+    assert.equal(id, 'dsh-handoff-20261031-1943')
+  } finally {
+    await rm(root, { recursive: true, force: true })
+  }
+})
+
 test('the default store migrates legacy .dsh/handoff to .dsh/dsh-handoff', async () => {
   const root = await workspace()
   try {

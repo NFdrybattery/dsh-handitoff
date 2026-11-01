@@ -1,8 +1,8 @@
-# dsh-handoff
+# dsh-handitoff
 
 把长会话交给新会话：旧会话模型写一份 `HANDOFF.md`，新会话只读这份文档继续。
 
-包名是 **dsh-handoff**，命令仍是 `/handoff`。
+包名是 **dsh-handitoff**，命令仍是 `/handoff`。
 
 [English](README.en.md)
 
@@ -18,18 +18,18 @@
 
 需要 DeepSeek Harness `0.2.1-rc.x`，Node.js `^22.19.0 || >=24.0.0`。
 
-在 **设置 → 插件** 里从本地目录安装这个 checkout，选中 `dsh-handoff`，然后重启。CLI 备选：
+在 **设置 → 插件** 里从本地目录安装这个 checkout，选中 `dsh-handitoff`，然后重启。CLI 备选：
 
 ```powershell
-dsh plugin --profile desktop add link:D:\path\to\dsh-handoff
+dsh plugin --profile desktop add link:D:\path\to\dsh-handitoff
 ```
 
-CLI 只安装包，仍需在 **设置 → 插件** 里选中 `dsh-handoff`（或写入 profile 的 `dsh.profile.bundles`）再重启。其他 profile 把 `desktop` 换成对应名称。
+CLI 只安装包，仍需在 **设置 → 插件** 里选中 `dsh-handitoff`（或写入 profile 的 `dsh.profile.bundles`）再重启。其他 profile 把 `desktop` 换成对应名称。
 
-卸载：**设置 → 插件** 移除 `dsh-handoff`，或：
+卸载：**设置 → 插件** 移除 `dsh-handitoff`，或：
 
 ```powershell
-dsh plugin --profile desktop remove dsh-handoff
+dsh plugin --profile desktop remove dsh-handitoff
 ```
 
 首次使用新默认目录时，会把旧的 `.dsh/handoff/` 自动迁到 `.dsh/dsh-handoff/`；已有文档随目录一起保留。
@@ -52,9 +52,11 @@ dsh plugin --profile desktop remove dsh-handoff
 
 在会话列表点 **⋯** →「交接并继续」：
 
-1. 旧会话模型开始写 `HANDOFF.md`；
-2. 等这一轮结束（最多 4 分钟）；
-3. 新会话执行 `/handoff resume --latest --wake`，命令结果收起，模型读取文档并结合项目文件梳理前期工作，给出简要接手总结。
+1. 旧会话模型开始写 `HANDOFF.md`（只写 0–11 节）；
+2. 等这一轮结束（最多 4 分钟），插件直接读取会话日志，把最近几轮对话追加为第 12 节；
+3. 文档生成后弹出标准提问卡，默认选项「否，开始交接」，下方可填写补充要求；
+4. 点「下一步」后：没有补充则直接打开新会话；有补充则把原文写入新会话的注入信息，并标明「交接前用户补充要求」；
+5. 新会话执行 `/handoff resume --latest --wake`，命令结果收起，模型读取文档并结合项目文件梳理前期工作，给出简要接手总结。
 
 新会话第一轮不执行命令、不改文件；确认后再继续。
 
@@ -86,8 +88,8 @@ dsh plugin --profile desktop remove dsh-handoff
 在 profile 的 `cordis.patch.yml` 里按 id 覆盖：
 
 ```yaml
-- id: dsh-handoff
-  name: dsh-handoff
+- id: dsh-handitoff
+  name: dsh-handitoff
   config:
     retentionDays: 1
     language: zh

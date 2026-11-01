@@ -1,20 +1,20 @@
-# dsh-handoff
+﻿# dsh-handitoff
 
 Hand a long Session to a fresh one: the old Session's model writes `HANDOFF.md`,
 and the new Session continues from that document alone.
 
-The package is **dsh-handoff**; the command is still `/handoff`.
+The package is **dsh-handitoff**; the command is still `/handoff`.
 
 [Chinese](README.md)
 
 ## Features
 
 - `/handoff` sends a handoff instruction to the current Session; the model writes
-  `HANDOFF.md` in 13 sections (0–12).
-- Section 12 copies the most recent user/assistant rounds verbatim, as `用户：` /
-  `回复：` lines, so the new Session sees the displayed conversation itself, not a
+  `HANDOFF.md` in 13 sections (0鈥?2).
+- Section 12 copies the most recent user/assistant rounds verbatim, as `鐢ㄦ埛锛歚 /
+  `鍥炲锛歚 lines, so the new Session sees the displayed conversation itself, not a
   summary; `recentRounds` defaults to 5.
-- **Handoff and continue** in the Session **⋯** menu waits for the old model,
+- **Handoff and continue** in the Session **鈰?* menu waits for the old model,
   creates a new Session, and reads only the document. The command result is a
   collapsed card instead of a long prompt.
 - `/handoff resume` injects a brief; `/handoff resume --latest --wake` also wakes
@@ -26,21 +26,21 @@ The package is **dsh-handoff**; the command is still `/handoff`.
 
 Requires DeepSeek Harness `0.2.1-rc.x` and Node.js `^22.19.0 || >=24.0.0`.
 
-In **Settings → Plugins**, install a bundle from this local checkout, select
-`dsh-handoff`, and restart. CLI alternative:
+In **Settings 鈫?Plugins**, install a bundle from this local checkout, select
+`dsh-handitoff`, and restart. CLI alternative:
 
 ```powershell
-dsh plugin --profile desktop add link:D:\path\to\dsh-handoff
+dsh plugin --profile desktop add link:D:\path\to\dsh-handitoff
 ```
 
-The CLI only installs the package; still select `dsh-handoff` in
-**Settings → Plugins** (or add it to the profile's `dsh.profile.bundles`) and
+The CLI only installs the package; still select `dsh-handitoff` in
+**Settings 鈫?Plugins** (or add it to the profile's `dsh.profile.bundles`) and
 restart.
 
 Uninstall:
 
 ```powershell
-dsh plugin --profile desktop remove dsh-handoff
+dsh plugin --profile desktop remove dsh-handitoff
 ```
 
 The first run with the new default migrates the old
@@ -61,19 +61,23 @@ documents move with it.
 document is ready only after that model turn finishes. `/handoff update` is the
 same action, `/handoff --new` starts another task line.
 
-Sections 0–11 are the handoff; section 12 is a verbatim transcript of the most
+Sections 0鈥?1 are the handoff; section 12 is a verbatim transcript of the most
 recent rounds. Section 12 is not summarized, while the other sections are; every
 section still needs real content, and facts come from the current Session.
 
 ### One-click handoff
 
-Session list **⋯** → **Handoff and continue**:
+Session list **鈰?* 鈫?**Handoff and continue**:
 
-1. the old model writes `HANDOFF.md`;
-2. the turn is allowed to finish (up to 4 minutes);
-3. the new Session runs `/handoff resume --latest --wake`, reads the document
-   (including recent rounds), reviews the project files, and gives a concise
-   takeover summary.
+1. the old model writes `HANDOFF.md` (sections 0鈥?1 only);
+2. the turn is allowed to finish (up to 4 minutes), then the plugin reads the
+   Session log and appends the recent rounds as section 12;
+3. a standard question card asks whether anything should be added; the default
+   option is "No, start handoff" and its input box is optional;
+4. on "Next": an empty box opens the new Session directly; text is inserted
+   verbatim into the resume injection under "User supplement before takeover";
+5. the new Session runs `/handoff resume --latest --wake`, reads the document,
+   reviews the project files, and gives a concise takeover summary.
 
 The first reply does not run commands or modify files.
 
@@ -90,7 +94,7 @@ The first reply does not run commands or modify files.
 - With `--wake`: inject and start the model turn; this is the one-click path.
 - With several pending tasks, use `--latest` or an explicit `taskId`.
 
-Re-running in the same Session reports “already resumed”; add `--force` to
+Re-running in the same Session reports 鈥渁lready resumed鈥? add `--force` to
 inject again.
 
 ### Archive
@@ -106,8 +110,8 @@ The document stays on disk but is no longer a resume candidate.
 Override the row in the profile's `cordis.patch.yml`:
 
 ```yaml
-- id: dsh-handoff
-  name: dsh-handoff
+- id: dsh-handitoff
+  name: dsh-handitoff
   config:
     retentionDays: 1
     language: zh
@@ -126,7 +130,7 @@ Override the row in the profile's `cordis.patch.yml`:
 
 ### Settings page
 
-After the plugin is installed and enabled, **Settings → Handoff** edits:
+After the plugin is installed and enabled, **Settings 鈫?Handoff** edits:
 
 - the three reminder thresholds
 - retention days
@@ -143,12 +147,12 @@ page itself; use the plugin manager or profile config for that.
 ```text
 <workspace>/.dsh/dsh-handoff/
   index.json              task index (metadata)
-  <taskId>/HANDOFF.md     the only content file, sections 0–12
+  <taskId>/HANDOFF.md     the only content file, sections 0鈥?2
 ```
 
 Every `/handoff` command cleans up tasks older than `retentionDays`; legacy
 `facts.json`, `history/`, and `resume-log.jsonl` are removed. Status flows
-`draft` → `pending` → `resumed`, with `archived` terminal.
+`draft` 鈫?`pending` 鈫?`resumed`, with `archived` terminal.
 
 Add `.dsh/` to `.gitignore` if handoff notes should not be committed.
 

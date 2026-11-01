@@ -20,7 +20,7 @@ const events = [
   {
     type: 'user/message',
     seq: 3,
-    data: { source: { kind: 'plugin:dsh-handoff' }, content: [{ type: 'text', text: '内部交接指令' }] },
+    data: { source: { kind: 'plugin:dsh-handitoff' }, content: [{ type: 'text', text: '内部交接指令' }] },
   },
   { type: 'tool/call', seq: 4, data: { name: 'write' } },
   { type: 'user/message', seq: 5, data: { source: { kind: 'user' }, content: [{ type: 'text', text: '第二轮' }] } },
