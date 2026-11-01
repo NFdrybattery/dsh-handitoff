@@ -4,6 +4,15 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.11.1] - 2026-11-01
+
+### Fixed
+
+- Read the supplement answer from the command result recursively instead of
+  assuming one wrapper shape; the question card returned the correct
+  `{"supplement":…}` payload, but the client previously saw an empty text and
+  aborted with "交接前提问没有返回有效结果".
+
 ## [0.11.0] - 2026-11-01
 
 ### Changed
