@@ -4,6 +4,17 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.11.5] - 2026-11-01
+
+### Fixed
+
+- Persist delivered reminder bands in
+  `.dsh/dsh-handitoff/reminders.json`, so a plugin reload or Session resume does
+  not re-fire or skip a step threshold.
+- Use the started step from the handoff facts projection as well as the
+  completed `sessionStats` step count, so a threshold crossed inside a long
+  tool step is reported at the next tool boundary.
+
 ## [0.11.4] - 2026-11-01
 
 ### Changed
