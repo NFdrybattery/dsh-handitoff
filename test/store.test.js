@@ -6,7 +6,7 @@ import { join, resolve } from 'node:path'
 import { HandoffStore, parseFrontmatter, resolveHandoffDir } from '../lib/store.js'
 
 async function workspace() {
-  return mkdtemp(join(tmpdir(), 'dsh-handoff-test-'))
+  return mkdtemp(join(tmpdir(), 'dsh-handitoff-test-'))
 }
 
 test('resolveHandoffDir stays inside the workspace', async () => {
