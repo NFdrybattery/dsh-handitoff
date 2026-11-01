@@ -4,6 +4,14 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.11.2] - 2026-11-01
+
+### Fixed
+
+- The question command now persists the supplement on the task, and the resume
+  command reads it from there. The client no longer depends on the command
+  result shape (`{ok:true,value:{matched:true}}` was only a dispatch ack).
+
 ## [0.11.1] - 2026-11-01
 
 ### Fixed
