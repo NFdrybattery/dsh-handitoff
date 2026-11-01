@@ -2,17 +2,17 @@
 
 把长会话交给新会话：旧会话模型写一份 `HANDOFF.md`，新会话只读这份文档继续。
 
-包名是 **dsh-handitoff**，命令仍是 `/handoff`。
+包名是 **dsh-handitoff**，命令仍是 `/handitoff`。
 
 [English](README.en.md)
 
 ## 功能
 
-- `/handoff`：在旧会话后台发送交接指令，由当前模型按 0–12 共 13 节写出 `HANDOFF.md`。
-- 第 12 节把最近几轮用户输入与助手回复**原样**抄进文档（`用户：` / `回复：`），不总结、不改写；轮数由 `recentRounds` 配置，默认 5。
+- `/handitoff`：在旧会话后台发送交接指令，由当前模型按 0–12 共 13 节写出 `HANDOFF.md`。
+- 第 12 节由插件在模型写完后直接读取会话日志追加（`用户：` / `回复：`），不经过 agent 转录；轮数由 `recentRounds` 配置，默认 5。
 - 会话 ⋯ 菜单「交接并继续」：等旧模型写完后自动新建会话，新会话只读文档；命令结果默认收起，不发送长 prompt。
-- `/handoff resume`：手动注摘要；`/handoff resume --latest --wake` 由命令处理器直接唤醒模型。
-- 任务默认 1 天后自动清理；文档在 `<工作区>/.dsh/dsh-handoff/`。
+- `/handitoff resume`：手动注摘要；`/handitoff resume --latest --wake` 由命令处理器直接唤醒模型。
+- 任务默认 1 天后自动清理；文档在 `<工作区>/.dsh/dsh-handitoff/`。
 
 ## 安装
 
@@ -32,19 +32,19 @@ CLI 只安装包，仍需在 **设置 → 插件** 里选中 `dsh-handitoff`（�
 dsh plugin --profile desktop remove dsh-handitoff
 ```
 
-首次使用新默认目录时，会把旧的 `.dsh/handoff/` 自动迁到 `.dsh/dsh-handoff/`；已有文档随目录一起保留。
+首次使用新默认目录时，会把旧的 `.dsh/dsh-handoff/` 或 `.dsh/handoff/` 自动迁到 `.dsh/dsh-handitoff/`；已有文档随目录一起保留。
 
 ## 用法
 
 ### 生成交接文档
 
 ```text
-/handoff
-/handoff status
-/handoff list
+/handitoff
+/handitoff status
+/handitoff list
 ```
 
-`/handoff` 只建目录并向当前模型发送带格式要求的指令；文档要等这一轮模型结束才可用。`/handoff update` 是同一动作，`/handoff --new` 新开一条任务线。
+`/handitoff` 只建目录并向当前模型发送带格式要求的指令；文档要等这一轮模型结束才可用。`/handitoff update` 是同一动作，`/handitoff --new` 新开一条任务线。
 
 文档 0–11 节是交接内容，第 12 节是原样转录的最近几轮对话。第 12 节不做归纳，其余各节才允许总结；每节都必须写实际内容、不允许只写标题，事实必须来自当前会话。
 
@@ -56,17 +56,17 @@ dsh plugin --profile desktop remove dsh-handitoff
 2. 等这一轮结束（最多 4 分钟），插件直接读取会话日志，把最近几轮对话追加为第 12 节；
 3. 文档生成后弹出标准提问卡，默认选项「否，开始交接」，下方可填写补充要求；
 4. 点「下一步」后：没有补充则直接打开新会话；有补充则把原文写入新会话的注入信息，并标明「交接前用户补充要求」；
-5. 新会话执行 `/handoff resume --latest --wake`，命令结果收起，模型读取文档并结合项目文件梳理前期工作，给出简要接手总结。
+5. 新会话执行 `/handitoff resume --latest --wake`，命令结果收起，模型读取文档并结合项目文件梳理前期工作，给出简要接手总结。
 
 新会话第一轮不执行命令、不改文件；确认后再继续。
 
 ### 手动接续
 
 ```text
-/handoff resume
-/handoff resume --latest
-/handoff resume --latest --wake
-/handoff resume <taskId>
+/handitoff resume
+/handitoff resume --latest
+/handitoff resume --latest --wake
+/handitoff resume <taskId>
 ```
 
 - 不带 `--wake`：只注入摘要，需要你再发一条消息；
@@ -78,7 +78,7 @@ dsh plugin --profile desktop remove dsh-handitoff
 ### 归档
 
 ```text
-/handoff archive <taskId>
+/handitoff archive <taskId>
 ```
 
 文档保留，但不再出现在 resume 候选中。
@@ -121,20 +121,20 @@ dsh plugin --profile desktop remove dsh-handitoff
 ## 文件
 
 ```text
-<工作区>/.dsh/dsh-handoff/
+<工作区>/.dsh/dsh-handitoff/
   index.json              任务索引（元数据）
   <taskId>/HANDOFF.md     唯一内容文件，含 0–12 节
 ```
 
-每次 `/handoff` 会清理超过 `retentionDays` 的旧任务；旧版本的 `facts.json`、`history/`、`resume-log.jsonl` 也会被删除。任务状态为 `draft` → `pending` → `resumed`，`archived` 为终态。
+每次 `/handitoff` 会清理超过 `retentionDays` 的旧任务；旧版本的 `facts.json`、`history/`、`resume-log.jsonl` 也会被删除。任务状态为 `draft` → `pending` → `resumed`，`archived` 为终态。
 
 不想把交接笔记提交进仓库，把 `.dsh/` 加进 `.gitignore`；想随项目交付就保留。
 
 ## 限制
 
-- 文档由旧会话模型生成，质量取决于它是否按模板写全；`/handoff status` 显示文档是否已生成。
+- 文档由旧会话模型生成，质量取决于它是否按模板写全；`/handitoff status` 显示文档是否已生成。
 - 一键交接需要会话已有工作区；空白会话不显示菜单项。
-- 文档缺少 frontmatter `task_id` 时，resume 会拒绝载入；重新 `/handoff` 即可。
+- 文档缺少 frontmatter `task_id` 时，resume 会拒绝载入；重新 `/handitoff` 即可。
 - `index.json` 仍是任务发现/清理所需的元数据文件，不是交接内容。
 
 ## 开发
@@ -145,7 +145,7 @@ npm test
 
 纯 ESM、无构建步骤；测试覆盖存储、清理、索引、摘要、指令格式和 resume 选择。
 
-仓库：<https://github.com/NFdrybattery/dsh-handoff>
+仓库：<https://github.com/NFdrybattery/dsh-handitoff>
 
 ## 许可证
 

@@ -1,6 +1,6 @@
 {
   "name": "dsh-handitoff",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "DeepSeek Harness plugin: write a workspace handoff document from a long session, then resume the work in a fresh session without re-discovering context.",
   "icon": "icon.svg",
   "keywords": [
@@ -17,11 +17,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/NFdrybattery/dsh-handoff.git"
+    "url": "git+https://github.com/NFdrybattery/dsh-handitoff.git"
   },
-  "homepage": "https://github.com/NFdrybattery/dsh-handoff#readme",
+  "homepage": "https://github.com/NFdrybattery/dsh-handitoff#readme",
   "bugs": {
-    "url": "https://github.com/NFdrybattery/dsh-handoff/issues"
+    "url": "https://github.com/NFdrybattery/dsh-handitoff/issues"
   },
   "type": "module",
   "main": "lib/index.js",

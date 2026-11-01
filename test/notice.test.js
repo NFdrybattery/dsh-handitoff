@@ -46,5 +46,5 @@ test('reminder text carries the step and context numbers', () => {
   const reminder = nextReminder({ steps: 812, tokens: 118_000, window: 131_072 }, config, new Set())
   assert.ok(reminder.text.includes('812'))
   assert.ok(reminder.text.includes('118k/131k'))
-  assert.ok(reminder.text.includes('/handoff'))
+  assert.ok(reminder.text.includes('/handitoff'))
 })

@@ -12,38 +12,52 @@ async function workspace() {
 test('resolveHandoffDir stays inside the workspace', async () => {
   const root = await workspace()
   try {
-    assert.equal(resolveHandoffDir(root, '.dsh/handoff'), resolve(root, '.dsh/handoff'))
+    assert.equal(resolveHandoffDir(root, '.dsh/handitoff'), resolve(root, '.dsh/handitoff'))
     assert.throws(() => resolveHandoffDir(root, 'C:\\outside'), /relative path/)
     assert.throws(() => resolveHandoffDir(root, '..\\outside'), /must not contain/)
     assert.throws(() => resolveHandoffDir(root, '.'), /strictly inside/)
-    assert.throws(() => resolveHandoffDir('', '.dsh/handoff'), /workspace directory is unknown/)
+    assert.throws(() => resolveHandoffDir('', '.dsh/handitoff'), /workspace directory is unknown/)
   } finally {
     await rm(root, { recursive: true, force: true })
   }
 })
 
-test('allocateTaskId always uses the dsh-handoff folder stem', async () => {
+test('allocateTaskId always uses the dsh-handitoff folder stem', async () => {
   const root = await workspace()
   try {
     const store = new HandoffStore({ cwd: root })
     await store.init()
     const id = await store.allocateTaskId('创建 dsh-handover 插件', new Date(2026, 9, 31, 19, 43))
-    assert.equal(id, 'dsh-handoff-20261031-1943')
+    assert.equal(id, 'dsh-handitoff-20261031-1943')
   } finally {
     await rm(root, { recursive: true, force: true })
   }
 })
 
-test('the default store migrates legacy .dsh/handoff to .dsh/dsh-handoff', async () => {
+test('the default store migrates legacy .dsh/handoff to .dsh/dsh-handitoff', async () => {
   const root = await workspace()
   try {
     await mkdir(join(root, '.dsh', 'handoff'), { recursive: true })
     await writeFile(join(root, '.dsh', 'handoff', 'marker.txt'), 'legacy', 'utf8')
     const store = new HandoffStore({ cwd: root })
     await store.init()
-    assert.equal(store.root, resolve(root, '.dsh', 'dsh-handoff'))
-    assert.equal(await readFile(join(root, '.dsh', 'dsh-handoff', 'marker.txt'), 'utf8'), 'legacy')
+    assert.equal(store.root, resolve(root, '.dsh', 'dsh-handitoff'))
+    assert.equal(await readFile(join(root, '.dsh', 'dsh-handitoff', 'marker.txt'), 'utf8'), 'legacy')
     await assert.rejects(readFile(join(root, '.dsh', 'handoff', 'marker.txt'), 'utf8'))
+  } finally {
+    await rm(root, { recursive: true, force: true })
+  }
+})
+
+test('the default store migrates the previous dsh-handoff docs directory', async () => {
+  const root = await workspace()
+  try {
+    await mkdir(join(root, '.dsh', 'dsh-handoff'), { recursive: true })
+    await writeFile(join(root, '.dsh', 'dsh-handoff', 'marker.txt'), 'previous', 'utf8')
+    const store = new HandoffStore({ cwd: root })
+    await store.init()
+    assert.equal(store.root, resolve(root, '.dsh', 'dsh-handitoff'))
+    assert.equal(await readFile(join(root, '.dsh', 'dsh-handitoff', 'marker.txt'), 'utf8'), 'previous')
   } finally {
     await rm(root, { recursive: true, force: true })
   }
@@ -52,7 +66,7 @@ test('the default store migrates legacy .dsh/handoff to .dsh/dsh-handoff', async
 test('facts, document history, index and resume log round-trip', async () => {
   const root = await workspace()
   try {
-    const store = new HandoffStore({ cwd: root, dir: '.dsh/handoff' })
+    const store = new HandoffStore({ cwd: root, dir: '.dsh/handitoff' })
     await store.init()
     assert.ok(store.root.startsWith(root))
 

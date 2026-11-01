@@ -60,7 +60,7 @@ test('resume carries a base64url supplement verbatim', () => {
 
 test('the one-click client half asks for the latest task, not an ambiguous resume', async () => {
   const source = await readFile(new URL('../lib/client.js', import.meta.url), 'utf8')
-  assert.match(source, /\/handoff resume --latest --wake/, 'the client must resolve the task and wake the model')
-  assert.doesNotMatch(source, /\/handoff resume'/, 'a bare resume fails once an older pending task exists')
-  assert.match(source, /\/handoff ask-supplement/, 'the one-click flow must use the normal question card')
+  assert.match(source, /\/handitoff resume --latest --wake/, 'the client must resolve the task and wake the model')
+  assert.doesNotMatch(source, /\/handitoff resume'/, 'a bare resume fails once an older pending task exists')
+  assert.match(source, /\/handitoff ask-supplement/, 'the one-click flow must use the normal question card')
 })

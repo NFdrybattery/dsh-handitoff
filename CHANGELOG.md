@@ -4,6 +4,17 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.11.0] - 2026-11-01
+
+### Changed
+
+- Rename the command from `/handoff` to `/handitoff`.
+- Move the default storage directory to `.dsh/dsh-handitoff`; existing
+  `.dsh/dsh-handoff` and `.dsh/handoff` directories are migrated on first use.
+- New task folders use `dsh-handitoff-YYYYMMDD-HHmm`.
+- Point the package repository URLs and documentation at `dsh-handitoff`.
+- Rename the Settings page to **Handitoff**.
+
 ## [0.10.0] - 2026-11-01
 
 ### Changed
