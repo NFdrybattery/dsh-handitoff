@@ -122,20 +122,17 @@ Override the row in the profile's `cordis.patch.yml`:
 | `enabled` | `true` | Master switch. |
 | `retentionDays` | `1` | Delete task folders not updated for this many days; `0` disables. |
 | `recentRounds` | `5` | Recent rounds embedded in the handoff; `0` disables the section. |
-| `resumeBriefMaxChars` | `2400` | Maximum injected brief length. |
 | `language` | `zh` | `zh` or `en`. |
-| `remindAfterSteps` | `800` | First step reminder. |
+| `remindAfterSteps` | `1000` | First step reminder. |
 | `remindEverySteps` | `200` | Reminder band interval. |
-| `remindAfterTokens` | `120000` | Context-token reminder; `0` disables. |
 
 ### Settings page
 
-After the plugin is installed and enabled, **Settings → Handoff** edits:
+After the plugin is installed and enabled, **Settings → Handitoff** edits:
 
-- the three reminder thresholds
+- the two reminder thresholds (initial steps and band interval)
 - retention days
 - recent rounds
-- maximum brief characters
 - brief/wake language
 
 Saving uses the Host settings API; some changes take effect after a plugin

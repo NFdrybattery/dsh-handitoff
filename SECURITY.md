@@ -27,5 +27,5 @@ an exploit before a fix is available.
 
 ## Supported versions
 
-Security fixes target the current `0.11.x` line and the DSH engine range
+Security fixes target the current `0.1.x` line and the DSH engine range
 `>=0.2.1-rc.1 <0.3.0-0`.

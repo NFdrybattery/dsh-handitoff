@@ -100,20 +100,17 @@ dsh plugin --profile desktop remove dsh-handitoff
 | `enabled` | `true` | 总开关。 |
 | `retentionDays` | `1` | 超过这么多天未更新的任务目录自动删除；`0` 关闭。 |
 | `recentRounds` | `5` | 写入交接文档的最近对话轮数；`0` 关闭该节。 |
-| `resumeBriefMaxChars` | `2400` | 接续摘要最大字符数。 |
 | `language` | `zh` | `zh` 或 `en`。 |
-| `remindAfterSteps` | `800` | 首次提醒步数。 |
+| `remindAfterSteps` | `1000` | 首次提醒步数。 |
 | `remindEverySteps` | `200` | 提醒分档间隔。 |
-| `remindAfterTokens` | `120000` | 上下文 token 提醒线；`0` 关闭。 |
 
 ### 设置页
 
-安装并启用插件后，**设置 → Handoff** 可以编辑：
+安装并启用插件后，**设置 → Handitoff** 可以编辑：
 
-- 三个提醒阈值
+- 两个提醒阈值（首次步数、分档间隔）
 - 任务保留天数
 - 最近对话轮数
-- 摘要最大字符数
 - 摘要/唤醒语言
 
 保存后的设置走 Host 设置 API；部分设置需要重新加载插件才生效。`enabled` 不放在设置页里，因为关闭插件后这个页面本身也会消失，启停请用插件管理或 profile 配置。
