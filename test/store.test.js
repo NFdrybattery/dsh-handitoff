@@ -241,10 +241,10 @@ test('cleanupExpired removes old tasks, orphan folders and keeps the latest', as
     const store = new HandoffStore({ cwd: root })
     await store.init()
     const oldId = '20200101-0000-old'
-    const freshId = '20261029-2000-fresh'
+    const freshId = '20261119-2000-fresh'
     for (const [taskId, updatedAt] of [
       [oldId, '2020-01-01T00:00:00+08:00'],
-      [freshId, '2026-10-29T20:00:00+08:00'],
+      [freshId, new Date(Date.now() - 60 * 60 * 1000).toISOString()],
     ]) {
       await store.writeFacts(taskId, { taskId, title: taskId })
       await store.writeDoc(taskId, `---\ntask_id: "${taskId}"\nstatus: "pending"\n---\n`)

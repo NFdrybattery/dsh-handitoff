@@ -27,7 +27,6 @@ test('one reminder per step band', () => {
 
 test('reminder text carries the step number only', () => {
   const reminder = nextReminder({ steps: 1012 }, config, new Set())
-  assert.ok(reminder.text.includes('1012'))
-  assert.ok(reminder.text.includes('/handitoff'))
+  assert.equal(reminder.text, '本会话已 1012 步。建议执行 /handitoff 将任务交接到新会话。')
   assert.ok(!reminder.text.includes('token'))
 })
