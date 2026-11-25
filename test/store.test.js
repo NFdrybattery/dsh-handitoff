@@ -63,6 +63,31 @@ test('the default store migrates the previous dsh-handoff docs directory', async
   }
 })
 
+test('the confirmation answer is recorded on the task row for the Client', async () => {
+  // The Client cannot read a command handler's result, so `/handitoff
+  // ask-supplement` records the card's answer here; the Client polls
+  // index.json for `askAt`/`askOutcome`.
+  const root = await workspace()
+  try {
+    const store = new HandoffStore({ cwd: root })
+    await store.init()
+    await store.upsertTask({ taskId: 't-1', title: 'T', status: 'pending', pendingSupplement: '' })
+    const askedAt = Date.now()
+    await store.updateTask('t-1', { askAt: askedAt, askOutcome: 'cancelled', pendingSupplement: '' })
+
+    const onDisk = JSON.parse(await readFile(join(root, '.dsh', 'dsh-handitoff', 'index.json'), 'utf8'))
+    const row = onDisk.tasks.find((task) => task.taskId === 't-1')
+    assert.equal(row.askAt, askedAt)
+    assert.equal(row.askOutcome, 'cancelled')
+
+    const { index } = await store.readIndex()
+    assert.equal(index.tasks[0].askAt, askedAt)
+    assert.equal(index.tasks[0].askOutcome, 'cancelled')
+  } finally {
+    await rm(root, { recursive: true, force: true })
+  }
+})
+
 test('facts, document history, index and resume log round-trip', async () => {
   const root = await workspace()
   try {

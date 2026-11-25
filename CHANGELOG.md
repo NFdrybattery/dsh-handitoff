@@ -4,6 +4,32 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.3] - 2026-11-25
+
+### Fixed
+
+- Move the step reminder out of the Session entirely: it is now a floating
+  Client card above the composer (`conversation.input.dock`) computed from the
+  `sessionStats` projection, so the model no longer sees the reminder, cannot
+  answer it by writing a handoff document on its own, and the user still gets a
+  visible card at the end of the transcript. The card does not auto-close and
+  offers two actions: handoff (runs the one-click flow) and postpone (raises
+  this Session's threshold by `remindEverySteps`, 1000 → 1200 → 1400…, persisted
+  in browser storage). The Host reminder module and its `reminders.json` state
+  are removed.
+- Read sections 0–11 of `HANDOFF.md` only above the plugin-owned section 12 and
+  outside fenced code blocks, so transcript headings such as `## 1. …` quoted
+  inside section 12 no longer report "重复章节 1、2、3" and block resume.
+- Detect a failed `/handitoff resume --latest --wake` in the one-click flow by
+  the model turn it should start, because `session.command()` returns only the
+  dispatch ack; a resume that never starts a turn now falls back to the document
+  prompt instead of leaving an empty new Session.
+- Honour "取消交接" in the one-click confirmation card: the card's answer never
+  reaches the Client half (no plugin event is in the forwarded-event allowlist),
+  so `/handitoff ask-supplement` records `askAt`/`askOutcome` on the task row and
+  the Client reads it back from `.dsh/dsh-handitoff/index.json`. A cancelled
+  handoff now stops before a new Session is created.
+
 ## [0.1.2] - 2026-11-23
 
 ### Changed

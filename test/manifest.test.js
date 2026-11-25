@@ -43,6 +43,39 @@ test('locale metadata relies on the package name instead of a custom title', () 
   }
 })
 
+test('the step reminder is a Client banner, never Session content', () => {
+  const source = readFileSync(join(root, 'lib', 'client.js'), 'utf8')
+  // A reminder written into the Session enters model context: the model then
+  // answers it and may write a handoff document on its own.
+  assert.match(source, /conversation\.input\.dock/)
+  assert.match(source, /useProjection\('sessionStats'/)
+  assert.match(source, /dsh-handitoff-reminder/)
+  // The card offers a handoff action and a per-Session postpone that steps the
+  // threshold up by `remindEverySteps`, persisted across reloads.
+  assert.match(source, /handoff\.run\(\)/)
+  assert.match(source, /POSTPONE_KEY_PREFIX/)
+  assert.match(source, /localStorage/)
+  assert.match(source, /handoffNow/)
+  assert.match(source, /postpone/)
+  for (const host of ['lib/notice.js', 'lib/notice-core.js']) {
+    assert.equal(existsSync(join(root, host)), false, `${host} must stay removed: the reminder is Client-only`)
+  }
+  const entry = readFileSync(join(root, 'lib', 'index.js'), 'utf8')
+  assert.ok(!entry.includes('registerHandoffNotices'), 'the host half must not register a reminder')
+})
+
+test('the client half reads the confirmation answer from the task index', () => {
+  const source = readFileSync(join(root, 'lib', 'client.js'), 'utf8')
+  // `session.command()` returns only a dispatch ack and the forwarded-event
+  // allowlist carries no plugin event, so the card's answer is read back from
+  // the task row `/handitoff ask-supplement` writes.
+  assert.match(source, /\.dsh\/dsh-handitoff\/index\.json/)
+  assert.match(source, /askOutcome/)
+  assert.match(source, /workspaceFiles/)
+  assert.ok(!source.includes('dsh-handitoff/cancelled'), 'the unforwarded cancel event must not be used')
+  assert.ok(!source.includes('cancelledSessions'), 'cancel detection must not depend on the dead event')
+})
+
 test('the client half registers a settings section with its settings dependencies', () => {
   const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'))
   const inject = manifest.dsh?.client?.inject ?? []
