@@ -43,6 +43,17 @@ test('locale metadata relies on the package name instead of a custom title', () 
   }
 })
 
+test('the one-click flow waits for the written document, not only the turn flag', () => {
+  const source = readFileSync(join(root, 'lib', 'client.js'), 'utf8')
+  // A huge Session can take longer than a turn-start window to report
+  // `running`; the written HANDOFF.md is the completion signal that does not
+  // depend on the Client binding's state.
+  assert.match(source, /waitForHandoffDocument/)
+  assert.match(source, /handoffDocumentBaseline/)
+  assert.match(source, /handoffDocumentWritten/)
+  assert.match(source, /waitForHandoffTurn/)
+})
+
 test('the step reminder is a Client banner, never Session content', () => {
   const source = readFileSync(join(root, 'lib', 'client.js'), 'utf8')
   // A reminder written into the Session enters model context: the model then
