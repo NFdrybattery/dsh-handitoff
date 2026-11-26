@@ -4,7 +4,7 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.1.4] - 2026-11-26
 
 ### Fixed
 
@@ -17,6 +17,12 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Open the new Session as soon as it is created (before the resume command), so
   a failed resume still leaves the user in the new window instead of no window at
   all; wait for the new Session to be catalogued first.
+
+### Changed
+
+- The reminder card now matches the composer width: it reuses the shared
+  `--dsh-composer-side-clearance` and `--dsh-composer-card-max-width` tokens,
+  keeps its buttons right-aligned, and wraps them on narrow viewports.
 
 ## [0.1.3] - 2026-11-25
 
